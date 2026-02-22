@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
@@ -34,17 +35,18 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    // This is now recognized because we apply 'org.jetbrains.kotlin.android'
     kotlinOptions {
         jvmTarget = "17"
     }
 }
 
 dependencies {
-    // Compose BOM (pick a stable version; you can bump later if you want)
-    implementation(platform("androidx.compose:compose-bom:2025.12.00"))
+    // Compose BOM (stable, widely available)
+    implementation(platform("androidx.compose:compose-bom:2024.06.00"))
 
-    implementation("androidx.core:core-ktx:1.17.0")
-    implementation("androidx.activity:activity-compose:1.12.4")
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.activity:activity-compose:1.9.0")
 
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -53,5 +55,5 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
 
     // Persistence (DataStore Preferences)
-    implementation("androidx.datastore:datastore-preferences:1.2.0")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 }
