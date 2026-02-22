@@ -1,17 +1,16 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
     namespace = "com.example.tapcircles"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.tapcircles"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
     }
@@ -30,19 +29,23 @@ android {
         compose = true
     }
 
+    // Compose compiler for Kotlin 1.9.24
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+}
 
-    // This is now recognized because we apply 'org.jetbrains.kotlin.android'
-    kotlinOptions {
-        jvmTarget = "17"
-    }
+kotlin {
+    jvmToolchain(17)
 }
 
 dependencies {
-    // Compose BOM (stable, widely available)
+    // Compose BOM
     implementation(platform("androidx.compose:compose-bom:2024.06.00"))
 
     implementation("androidx.core:core-ktx:1.13.1")
