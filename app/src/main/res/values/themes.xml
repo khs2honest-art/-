@@ -1,5 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.TapCirclesApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
+    <!--
+      We keep an app theme resource so AndroidManifest can reference it,
+      but use a built-in Android theme to avoid needing Material (Views) themes.
+    -->
+    <style name="Theme.TapCirclesApp" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Customize your theme here if needed. -->
     </style>
 </resources>
