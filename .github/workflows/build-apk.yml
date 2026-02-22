@@ -22,7 +22,7 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install Android SDK packages (API 35 / Build Tools 35.0.0)
+      - name: Install Android SDK packages (API 34 / Build Tools 34.0.0)
         shell: bash
         run: |
           set -e
@@ -41,13 +41,13 @@ jobs:
 
           "$SDKMANAGER" --install \
             "platform-tools" \
-            "platforms;android-35" \
-            "build-tools;35.0.0"
+            "platforms;android-34" \
+            "build-tools;34.0.0"
 
-      - name: Set up Gradle 9.1.0
+      - name: Set up Gradle 8.7 (compatible with AGP 8.5.x)
         uses: gradle/actions/setup-gradle@v5
         with:
-          gradle-version: "9.1.0"
+          gradle-version: "8.7"
 
       - name: Build Debug APK
         run: gradle --no-daemon assembleDebug
