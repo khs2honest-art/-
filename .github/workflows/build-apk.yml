@@ -3,7 +3,7 @@ name: Build Debug APK
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -22,31 +22,29 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-- name: Install required SDK packages (API 35 / Build Tools 35.0.0)
-  shell: bash
-  run: |
-    echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+      - name: Install Android SDK packages (API 35 / Build Tools 35.0.0)
+        shell: bash
+        run: |
+          set -e
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
 
-    SDKMANAGER="$(command -v sdkmanager || true)"
-    if [ -z "$SDKMANAGER" ]; then
-      SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
-    fi
-    # 너 로그에선 cmdline-tools/16.0 경로였으니 그도 동작함
-    if [ ! -x "$SDKMANAGER" ]; then
-      SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/16.0/bin/sdkmanager"
-    fi
+          SDKMANAGER="$(command -v sdkmanager || true)"
+          if [ -z "$SDKMANAGER" ]; then
+            SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
+          fi
+          if [ ! -x "$SDKMANAGER" ]; then
+            SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/16.0/bin/sdkmanager"
+          fi
 
-    echo "Using sdkmanager: $SDKMANAGER"
+          echo "Using sdkmanager: $SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
 
-    # ✅ 핵심: Broken pipe가 떠도 실패 처리 안 하게 만들기
-    yes | "$SDKMANAGER" --licenses || true
+          "$SDKMANAGER" --install \
+            "platform-tools" \
+            "platforms;android-35" \
+            "build-tools;35.0.0"
 
-    "$SDKMANAGER" --install \
-      "platform-tools" \
-      "platforms;android-35" \
-      "build-tools;35.0.0"
-
-      - name: Set up Gradle 9.1.0 (required by AGP 9.0.x)
+      - name: Set up Gradle 9.1.0
         uses: gradle/actions/setup-gradle@v5
         with:
           gradle-version: "9.1.0"
@@ -58,4 +56,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
